@@ -1,0 +1,53 @@
+<body oncontextmenu='return false' class='snippet-body'>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css">
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
+    <div class="container">
+        <div class="row header" style="color:green">
+            <h2>Meters Data</h3>
+        </div>
+        <table id="example" class="table table-striped table-bordered"
+            style="width:100%;font-family: tahoma !important;">
+            <tbody>
+                {% for row in Result %}
+                <tr>
+                    <td text-align:center><a href="http://localhost:5000/api/meters/{{row["id"]}}/data">Meter - {{row["id"]}}</td>
+                    <td style="word-break:break-all; width: 200px;">
+                        <p style="word-wrap: break-word;  word-wrap: break-word; width: 200px;">{{row[5]}}</p>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <script type='text/javascript' src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js'></script>
+    <script type='text/javascript'>
+        //$(document).ready(function() {
+        //$('#example').DataTable();
+        $(document).ready(function () {
+            $('#example').DataTable({
+                serverSide: true,
+                ordering: false,
+                searching: false,
+                ajax: function (Result, callback, settings) {
+                    var out = [];
+
+                    for (var i = Result.start, ien = Result.start + Result.length; i < ien; i++) {
+                        out.push([i + '-1', i + '-2', i + '-3', i + '-4', i + '-5', i + '-6']);
+                    }
+
+                    setTimeout(function () {
+                        callback({
+                            draw: data.draw,
+                            data: out,
+                            recordsTotal: 5000000,
+                            recordsFiltered: 5000000
+                        });
+                    }, 50);
+                },
+                scrollY: 200,
+                scroller: {
+                    loadingIndicator: true
+                },
+            });
+        });</script>
+</body>
